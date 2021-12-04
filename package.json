@@ -1,0 +1,19 @@
+{
+  "name": "get-hourse-info",
+  "version": "1.0.0",
+  "description": "聚合自己关注的房价信息，协助买房",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YangXinxiang/get-hourse-info.git"
+  },
+  "author": "yxx",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YangXinxiang/get-hourse-info/issues"
+  },
+  "homepage": "https://github.com/YangXinxiang/get-hourse-info#readme"
+}
