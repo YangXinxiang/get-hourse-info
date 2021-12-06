@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/YangXinxiang/get-hourse-info/issues"
   },
-  "homepage": "https://github.com/YangXinxiang/get-hourse-info#readme"
+  "homepage": "https://github.com/YangXinxiang/get-hourse-info#readme",
+  "dependencies": {
+    "axios": "^0.24.0"
+  }
 }
