@@ -63,6 +63,7 @@ function getArea(pageStr, from = "LJ") {
  */
 function getHourseType(pageStr, from = "LJ") {
     // dom 格式 <div class="room"><div class="mainInfo">2室1厅</div>
+    // dom 格式 <div class="room"><div class="mainInfo">2室1厅</div>
     const reg = /<div class="room"><div class="mainInfo">{1}(.{4,10})<\/div>/;
     const rst = reg.exec(pageStr)
     if(rst && rst[1]) {
@@ -80,7 +81,8 @@ function getHourseType(pageStr, from = "LJ") {
  */
  function getOrientation(pageStr, from = "LJ") {
     // dom 格式 <div class="type"><div class="mainInfo" title="南 北">南 北</div>
-    const reg = /<div class="type"><div class="mainInfo" title="{1}(.{2,6})">/;
+    // <div class="type"><div class="mainInfo" title="南 北">南 北</div>
+    const reg = /<div class="type"><div class="mainInfo" title="{1}(.{1,10})">/;
     const rst = reg.exec(pageStr)
     if(rst && rst[1]) {
         return rst[1]
@@ -97,7 +99,7 @@ function getHourseType(pageStr, from = "LJ") {
  */
  function getFloor(pageStr, from = "LJ") {
     // dom 格式 <div class="subInfo">中楼层/共14层</div></div>
-    const reg = /<div class="subInfo">{1}(.{3,12})<\/div>/;
+    const reg = /<div class="subInfo">{1}(.{3,12})<\/div><\/div>/;
     const rst = reg.exec(pageStr)
     if(rst && rst[1]) {
         return rst[1]
@@ -131,7 +133,7 @@ function getHourseType(pageStr, from = "LJ") {
  */
  function getFitUp(pageStr, from = "LJ") {
     // dom 格式 <div class="subInfo">平层/精装</div></div><div class="area">
-    const reg = /<div class="subInfo">{1}(.{3,10})<\/div>/;
+    const reg = /<div class="subInfo">{1}(.{3,10})<\/div><\/div><div class="area">/;
     const rst = reg.exec(pageStr)
     if(rst && rst[1]) {
         return rst[1]
@@ -229,7 +231,18 @@ function getUnitPrice(pageStr, from = "LJ") {
             </span>
           </div>
     */
-    const reg = /<label class="xiaoqu_main_label">小区均价<\/label>{1}\s+<span class="xiaoqu_main_info price_red">{1}\s+(\d+)/;
+
+    /*
+    <div class="xiaoqu_info">
+            <label class="xiaoqu_main_label">小区均价</label>
+            <span class="xiaoqu_main_info price_red">
+              
+                66777 元/㎡
+              
+            </span>
+          </div>
+    */
+    const reg = /<span class="xiaoqu_main_info price_red">{1}\s+(\d+)/;
     const rst = reg.exec(pageStr)
     if(rst && rst[1]) {
         return rst[1]
