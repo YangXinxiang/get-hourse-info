@@ -242,7 +242,17 @@ function getUnitPrice(pageStr, from = "LJ") {
             </span>
           </div>
     */
-    const reg = /<span class="xiaoqu_main_info price_red">{1}\s+(\d+)/;
+    /*
+          <div class="xiaoqu_info">
+            <label class="xiaoqu_main_label">小区均价</label>
+            <span class="xiaoqu_main_info price_red">
+              
+                66777 元/㎡
+              
+            </span>
+          </div>
+    */
+    const reg = /<span class="xiaoqu_main_info price_red">{1}\s*(\d+)/
     const rst = reg.exec(pageStr)
     if(rst && rst[1]) {
         return rst[1]

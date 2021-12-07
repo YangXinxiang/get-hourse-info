@@ -49,6 +49,18 @@ function start(){
 	}
 	
 }
+/**
+ * 隐藏信息面板
+ */
+function hidePanel() {
+	document.getElementById("outputPanel").style.display = "none"
+}
+/**
+ * 显示信息面板
+ */
+function showPanel() {
+	document.getElementById("outputPanel").style.display = "block"
+}
 //响应按钮点击
 function stop(){
 	outputLog("stop :: enter.");
@@ -62,10 +74,10 @@ function addUserPanel(){
 	//创建外层div
 	var outerDiv = d.createElement("div");
 	outerDiv.style.position="fixed";
-	outerDiv.style.top="50px";
+	outerDiv.style.top="20px";
 	outerDiv.style.left="160px";
 	outerDiv.style.border="1px solid #7ba0c3";
-	outerDiv.style.width="240px";
+	outerDiv.style.width="500px";
 	//outerDiv.style.height="150px";
 	outerDiv.style.padding="5px"
 	//创建说明提示
@@ -85,9 +97,31 @@ function addUserPanel(){
 	b1.id="startBuuton";
 	b1.value = "分析页面";
 	outerDiv.appendChild(b1);
-	outerDiv.appendChild(d.createElement("br"));
+	// outerDiv.appendChild(d.createElement("br"));
 	b1.onclick=function(){
 		start();
+	};
+	
+	var b2 = d.createElement("input");
+	b2.type="button";
+	b2.name="hideBuuton";
+	b2.id="hideBuuton";
+	b2.value = "隐藏";
+	outerDiv.appendChild(b2);
+	// outerDiv.appendChild(d.createElement("br"));
+	b2.onclick=function(){
+		hidePanel();
+	};	
+
+	var b3 = d.createElement("input");
+	b3.type="button";
+	b3.name="hideBuuton";
+	b3.id="hideBuuton";
+	b3.value = "显示";
+	outerDiv.appendChild(b3);
+	// outerDiv.appendChild(d.createElement("br"));
+	b3.onclick=function(){
+		showPanel();
 	};	
 	// 添加到文档树
 	document.body.appendChild(outerDiv);
@@ -113,8 +147,8 @@ function addTable() {
 	var outputArea = document.createElement("div");
 	outputArea.id = "outputPanel";	
 	outputArea.style.position="fixed";
-	outputArea.style.top="200px";
-	outputArea.style.left="30px";
+	outputArea.style.top="100px";
+	outputArea.style.left="10px";
 	outputArea.innerHTML = `<table class="gridtable"> 
         <tr> 
             <th v-for="item in myHeaders">{{item}}</th> 
@@ -180,9 +214,13 @@ var url = location.href;
 // if(url.indexOf("https://bj.lianjia.com")>=0){
 if(url.indexOf("mofaxiao.com")>=0 || url.indexOf("https://bj.lianjia.com")>=0){
 	// 很奇怪，会执行两遍。。。。暂时没找到解决方案。
-	createTableStyle(); //创建表格样式
-	addUserPanel();
-	startVueApp()
+	// 一开始的时候，可能有部分页面信息还没有显示出来，部分字段分析不到，因此，做一个延时
+	setTimeout(()=>{
+		createTableStyle(); //创建表格样式
+		addUserPanel();
+		startVueApp()
+	},1000)
+	
 	
 }
 
