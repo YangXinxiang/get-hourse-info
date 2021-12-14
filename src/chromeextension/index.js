@@ -171,7 +171,7 @@ function startVueApp() {
 	myApp = new Vue({
 		el: '#outputPanel',
 		data: {  		  																				
-		  	myHeaders:["标题","面积（㎡）", "房间类型", "朝向", "楼层", "添加时候的报价（万）", "装修情况", "网上说的税费（万）", "预计总首付（不含中介费）", "元/㎡", "小区均价", "挂牌时间", "关注时间", "购买意愿", "是否已现场看", "是否已成交", "是否有电梯", "梯户比", "建筑年代", "持有年数",  "抵押贷款","备注", "房源连接", "其他补充说明"],
+		  	myHeaders:["标题","面积（㎡）", "房间类型", "朝向", "楼层", "添加时候的报价（万）", "装修情况", "网上说的税费（万）", "预计总首付（不含中介费）", "元/㎡", "小区均价", "挂牌时间", "关注时间", "购买意愿", "是否已现场看","是否已下架", "是否已成交", "是否有电梯", "梯户比", "建筑年代", "持有年数",  "抵押贷款","备注", "房源连接", "其他补充说明"],
 			myHourseInfos : []
 		},
         mounted: function () {            
@@ -182,12 +182,12 @@ function startVueApp() {
 			startParse() {
 				console.log(`myExtension startParse :: enter.`)
 				const data = parse(document.documentElement.outerHTML);
-				const {title, area, hourseType, orientation, floor, price, fitUp, taxation, totalDownPayment, unitPrice, averagePrice, listingTime, hasElevator, tiHuBi, buildYear, rid, holdYears, mortgageInfo} = data
-				console.log(`myExtension startParse :: title = ${title}`)
+				const {title, area, hourseType, orientation, floor, price, fitUp, taxation, totalDownPayment, unitPrice, averagePrice, listingTime, hasElevator, tiHuBi, buildYear, rid, holdYears, mortgageInfo,hasClosed, hasRemoved} = data
+				console.log(`myExtension startParse :: title = ${title}, hasClosed = ${hasClosed}, hasRemoved = ${hasRemoved}`)
 				const followDate = this.getDateStr(new Date());  // "关注时间"
 				const willing = ""; // "购买意愿"
-				const hasViewed = false; // "是否已现场看"
-				const hasClosed = false; // "是否已成交"
+				const hasViewed = "否"; // "是否已现场看"
+				
 				const remarks = ""; // 备注
 				const url = location.href;
 				const others = ""
@@ -195,7 +195,8 @@ function startVueApp() {
 					followDate,
 					willing,
 					hasViewed,
-					hasClosed,
+					hasRemoved, // 是否已下架
+					hasClosed, // 是否已成交
 					hasElevator, tiHuBi, buildYear, holdYears, mortgageInfo, remarks, url, others];
 				this.myHourseInfos.push(hourseInfo);
 			},
@@ -219,7 +220,7 @@ if(url.indexOf("mofaxiao.com")>=0 || url.indexOf("https://bj.lianjia.com")>=0){
 		createTableStyle(); //创建表格样式
 		addUserPanel();
 		startVueApp()
-	},1000)
+	},2500)
 	
 	
 }

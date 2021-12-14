@@ -14,14 +14,16 @@ function parse(pageStr) {
     const averagePrice = getAveragePrice(pageStr);  // 小区均价
     const listingTime = getListingTime(pageStr);  // 挂牌时间
     const hasElevator = getHasElevator(pageStr);  // 是否有电梯
+    const hasClosed = getHasClosed(pageStr);  // 是否已成交
+    const hasRemoved = getHasRemoved(pageStr);  // 是否已下架
     const tiHuBi = getTiHuBi(pageStr);  // 梯户比
     const buildYear = getBuildYear(pageStr);  // 建筑年代
     const holdYears = getHoldYears(pageStr); // 是否满5年，满2年
     const mortgageInfo = getMortgageInfo(pageStr) // 房屋抵押信息
     const rid = getRid(pageStr) // 小区id
     // const url = "";  // 房源连接
-    console.log(title, area, hourseType, orientation, floor, price, fitUp, taxation, totalDownPayment, unitPrice, averagePrice, listingTime, hasElevator, tiHuBi, buildYear, rid, holdYears, mortgageInfo)
-    return {title, area, hourseType, orientation, floor, price, fitUp, taxation, totalDownPayment, unitPrice, averagePrice, listingTime, hasElevator, tiHuBi, buildYear, rid, holdYears, mortgageInfo}
+    console.log(title, area, hourseType, orientation, floor, price, fitUp, taxation, totalDownPayment, unitPrice, averagePrice, listingTime, hasElevator, tiHuBi, buildYear, rid, holdYears, mortgageInfo, hasClosed, hasRemoved)
+    return {title, area, hourseType, orientation, floor, price, fitUp, taxation, totalDownPayment, unitPrice, averagePrice, listingTime, hasElevator, tiHuBi, buildYear, rid, holdYears, mortgageInfo, hasClosed, hasRemoved}
 }
 /**
  * 获取房子的主题描述
@@ -80,7 +82,8 @@ function getHourseType(pageStr, from = "LJ") {
  */
  function getOrientation(pageStr, from = "LJ") {
     // dom 格式 <div class="type"><div class="mainInfo" title="南 北">南 北</div>
-    const reg = /<div class="type"><div class="mainInfo" title="{1}(.{2,6})">/;
+    // <div class="type"><div class="mainInfo" title="南 北">南 北</div>
+    const reg = /<div class="type"><div class="mainInfo" title="{1}(.{1,10})">/;
     const rst = reg.exec(pageStr)
     if(rst && rst[1]) {
         return rst[1]
@@ -97,7 +100,7 @@ function getHourseType(pageStr, from = "LJ") {
  */
  function getFloor(pageStr, from = "LJ") {
     // dom 格式 <div class="subInfo">中楼层/共14层</div></div>
-    const reg = /<div class="subInfo">{1}(.{3,12})<\/div>/;
+    const reg = /<div class="subInfo">{1}(.{3,12})<\/div><\/div>/;
     const rst = reg.exec(pageStr)
     if(rst && rst[1]) {
         return rst[1]
@@ -131,7 +134,7 @@ function getHourseType(pageStr, from = "LJ") {
  */
  function getFitUp(pageStr, from = "LJ") {
     // dom 格式 <div class="subInfo">平层/精装</div></div><div class="area">
-    const reg = /<div class="subInfo">{1}(.{3,10})<\/div>/;
+    const reg = /<div class="subInfo">{1}(.{3,10})<\/div><\/div><div class="area">/;
     const rst = reg.exec(pageStr)
     if(rst && rst[1]) {
         return rst[1]
@@ -285,6 +288,60 @@ function getUnitPrice(pageStr, from = "LJ") {
         return -1;
     }
 }
+
+
+
+/**
+ * 获取是否已成交
+ * @param {*} pageStr 
+ * @param {*} from 
+ * @returns 
+ */
+ function getHasClosed(pageStr, from = "LJ") {
+    // dom 格式 
+    /*
+    * 目前貌似只有贝壳才会标注已成交，是用图片标注的
+    <img src="https://s1.ljcdn.com/pegasus/redskull/images/ershoufang/chengjiao.png?_v=202111301437322" class="chengjiao">
+    */
+    const reg = /class="chengjiao">{1}/;
+    const rst = reg.exec(pageStr)
+    if(rst) {
+        return "已成交"
+    } else {
+        return "?";
+    }
+}
+
+/**
+ * 获取是否已下架
+ * @param {*} pageStr 
+ * @param {*} from 
+ * @returns 
+ */
+ function getHasRemoved(pageStr, from = "LJ") {
+    // dom 格式 
+    /*
+    链家的格式：
+    <h1 class="main" title="芳古园一区 2室1厅 57.04平米">芳古园一区 2室1厅 57.04平米<span>已下架</span></h1>
+    */
+   /*
+   贝壳的格式
+   <h1 class="main" title="芳古园一区 2室1厅 57.04平米">
+                        芳古园一区 2室1厅 57.04平米
+                                                    <span>已下架</span>                                            </h1>
+                    <div class="sub">
+                                                     
+                                            </div>
+   */
+    const reg = /<span>已下架<\/span>{1}/;
+    const rst = reg.exec(pageStr)
+    if(rst) {
+        return "已下架"
+    } else {
+        return "否";
+    }
+}
+
 
 /**
  * 获取梯户比

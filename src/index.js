@@ -1,6 +1,6 @@
 // 入口方法
 const { parse } = require("./parser")
-const { pageStr : totalStr } =require("./data/index2")
+const { pageStr : totalStr } =require("./data/index-xj")
 const { requestGet } = require("./util/request")
 const urlList = [
     "https://bj.lianjia.com/ershoufang/101113284093.html",
